@@ -8,10 +8,18 @@ import string
 chatposition = (2850, 1028)
 
 numbers = open("number.txt", "r")
-message = open("message.txt", "r")
+message = open("message.txt", "r", encoding="utf8")
+old_message = message.read()
+message = """"""
+for i in old_message:
+    if i == "\n":
+        message = message + " "
+    else:
+        message = message + i
 numbers = numbers.read()
 numbers = numbers.split(",")
-limit = input("limite the usage : ")
+limit = int(input("limit the usage : "))
+repeat = int(input("repeat : "))
 new_number = []
 
 # # ---------------handel the new numbers--------------#
@@ -58,7 +66,7 @@ for number in numbers:
 # # -------------------run------------------------#
 sent_msgs = 0
 while True:
-    if str(sent_msgs) >= limit and limit != "unlimted":
+    if sent_msgs >= limit and limit != "unlimted":
         print("done successfully")
         exit()
     url = (
@@ -68,12 +76,13 @@ while True:
     )
     # ----------------------------------------
     webbrowser.open(url)
-    time.sleep(10)
-    gui.click(chatposition)  # for now mish bnst8dmo
-    keyboard.write(message)
-    gui.press("enter")
+    time.sleep(20)
+    for i in range(repeat):
+        gui.click(chatposition)
+        keyboard.write(message)
+        gui.press("enter")
     time.sleep(5)
-    sent_msgs = sent_msgs + 1
+    sent_msgs += 1
     keyboard.press_and_release("ctrl+w")
 # ------------------------- mkan el mouse ---------------#
 
