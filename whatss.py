@@ -4,18 +4,12 @@ import keyboard
 import time
 import string
 
-# ---------------------new numbers------------------#
-chatposition = (2850, 1028)
-
 numbers = open("number.txt", "r")
 message = open("message.txt", "r", encoding="utf8")
 old_message = message.read()
 message = """"""
 for i in old_message:
-    if i == "\n":
-        message = message + " "
-    else:
-        message = message + i
+    message = f"{message} " if i == "\n" else message + i
 numbers = numbers.read()
 numbers = numbers.split(",")
 limit = int(input("limit the usage : "))
@@ -25,7 +19,7 @@ new_number = []
 # # ---------------handel the new numbers--------------#
 for number in numbers:
     for x in string.ascii_letters:
-        number = number.replace(x + ",", "")
+        number = number.replace(f"{x},", "")
         number = number.replace(x, "")
     number = number.replace("+", "'+")
     number = number.replace(",", "',")
@@ -35,7 +29,7 @@ for number in numbers:
     number = number.replace("'1", "'01")
     number = number.replace("-", "")
     number = number.replace("+", "")
-    for x in range(11):
+    for _ in range(11):
         number = number.replace("'1", "'")
         number = number.replace("'2", "'")
         number = number.replace("'3", "'")
@@ -65,19 +59,17 @@ for number in numbers:
 
 # # -------------------run------------------------#
 sent_msgs = 0
+chatposition = (2850, 1028)
 while True:
     if sent_msgs >= limit and limit != "unlimted":
         print("done successfully")
         exit()
-    url = (
-        "https://web.whatsapp.com/send?phone=%2B2"
-        + new_number[sent_msgs]
-        + "&text&app_absent=0"
-    )
+    url = f"https://web.whatsapp.com/send?phone=%2B2{new_number[sent_msgs]}&text&app_absent=0"
+
     # ----------------------------------------
     webbrowser.open(url)
     time.sleep(20)
-    for i in range(repeat):
+    for _ in range(repeat):
         gui.click(chatposition)
         keyboard.write(message)
         gui.press("enter")
